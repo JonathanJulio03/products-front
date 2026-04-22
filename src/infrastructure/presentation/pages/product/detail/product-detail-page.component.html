@@ -1,0 +1,72 @@
+<div class="container">
+  <nav>
+    <a routerLink="/products">← Back to Products</a>
+  </nav>
+
+  @if (productUseCase.isLoading()) {
+    <div class="skeleton">Loading product profile...</div>
+  } @else if (productUseCase.error()) {
+    <div class="error-box">
+      <p>{{ productUseCase.error() }}</p>
+      <button (click)="ngOnInit()">Retry</button>
+    </div>
+  } @else {
+    
+    @if (productUseCase.selectedProduct(); as product) {
+      <article class="profile-card">
+        <header>
+          <button class="toggle-edit-btn" (click)="toggleEditMode()">
+            {{ isEditing() ? 'Cancel' : 'Edit' }}
+          </button>
+          
+          <h1>{{ isEditing() ? 'Edit Product' : product.name }}</h1>
+        </header>
+
+        <section class="details">
+          
+          @if (!isEditing()) {
+            <div class="info-group">
+              <span class="lbl">Name</span>
+              <p>{{ product.name }}</p>
+            </div>
+            
+            <div class="info-group">
+              <span class="lbl">Description</span>
+              <p>{{ product.description }}</p>
+            </div>
+
+            <div class="info-group">
+              <span class="lbl">Price</span>
+              <p class="price-tag">${{ product.price | number:'1.2-2' }}</p>
+            </div>
+          } 
+          
+          @else {
+            <form [formGroup]="form" (ngSubmit)="saveChanges()" class="edit-form">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" formControlName="name" />
+              </div>
+              
+              <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" formControlName="description" />
+              </div>
+              
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" step="0.01" min="0" id="price" formControlName="price" />
+              </div>
+
+              <button type="submit" class="save-btn" [disabled]="form.invalid || productUseCase.isLoading()">
+                Save
+              </button>
+            </form>
+          }
+
+        </section>
+      </article>
+    }
+
+  }
+</div>

@@ -1,0 +1,2 @@
+# products-front
+Manage products

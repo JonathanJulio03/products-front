@@ -5,7 +5,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { presentationRoutes } from '../infrastructure/presentation/presentation.routes';
 import { inPortsProviders } from './ports-config/in-ports-config';
 import { outPortsProviders } from './ports-config/out-ports-config';
-import { errorInterceptor } from '../infrastructure/adapters/interceptors/error.interceptor';
+import { errorInterceptor } from '../infrastructure/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
